@@ -49,6 +49,8 @@ The maximum value is 4.
 
 This application was written in JavaScript and styled mainly with Bootstrap.
 
+---
+
 #### Author
 
 Tim Silby (tim.silby@gmail.com)
