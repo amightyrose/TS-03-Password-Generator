@@ -5,15 +5,18 @@
 
 
 
-var intPwdLength = 0;		// Length of the password
-var strPassword = "";		// The generated password
-var intNoOfCharTypes = 1;	// Minimum number of character types allowed in the password (1 - 4)
-var arrCharTypes = [];		// Array to hold the character types chosen
-var arrCharacters = [];		// Array to hold the characters that will be used to generate the password
-var generateBtn = document.querySelector("#generate");		// The "generate" button
+var strPasswordList = "";							// String containing all the generated passwords
+var arrCharTypes = [];								// Array to hold the character types chosen
+var arrCharacters = [];								// Array to hold the characters that will be used to generate the password
+var generateBtn = document.querySelector("#btnGenerate");	// The "generate" button
 
 
-// Objects specifying the start and end code points for each range of characters
+// Minimum number of character types allowed in the password (1 - 4). Change this variable to increase or decrease the
+// password complexity.
+var intNoOfCharTypes = 1;
+
+
+// Objects specifying the start and end code points for each range of characters.
 var objNumCharCP = {
 
 	start: 0x0030,
@@ -74,99 +77,82 @@ generateBtn.addEventListener("click", writePassword);
 // Write password to the #password input
 function writePassword() {
 
-	var password = generatePassword();
-	var passwordText = document.querySelector("#password");
-	passwordText.value = password;
+
+	strPasswordList = "";
+
+
+	// Call the getCharTypes function. Check to see if the minimum number of types (intNoOfCharTypes)
+	// has been met. If not, alert the user. Otherwise continue.
+
+	var arrCharTypes = getCharTypes();
+
+	if (arrCharTypes.length < intNoOfCharTypes) {
+
+		alert("Please choose " + intNoOfCharTypes + " or more character types!");
+
+	}
+
+	else {
+
+		// Now that we have all the password parameters (length and which character types to use), start building
+		// an array of characters to choose from. Call the getCharacters function for each type in arrCharTypes.
+
+		arrCharTypes.forEach(getCharacters);
+
+
+		// Now that we have an array of characters to choose from, call the generatePasswords function to generate
+		// the required number of passwords.
+
+		generatePasswords();
+
+		// Write the generated password/s to the textarea on the form
+		let pwdTextArea = document.querySelector("#passwordOutput");
+		pwdTextArea.value = strPasswordList;
+
+		// Enable the copy button
+		document.getElementById("btnCopyText").disabled = false
+
+	}
+
 
 }
 
 
-// The main function that generates the password. It returns the generated password as a string.
+// Checks which character type checkboxes have been ticked. Each type that has been chosen is added
+// to an array then the arry is returned.
 
-function generatePassword() {
-
-
-	// Prompt the user for the desired password length. Length must be from 8 to 128 characters. Loop until
-	// the user chooses a valid length.
-
-	while (intPwdLength < 8 || intPwdLength > 128) {
-
-		intPwdLength = prompt("Please choose a password length (8 - 128 characters)");
-
-	}
+function getCharTypes() {
 
 
-	// Build the arrCharTypes array so we know which character types to use.
-	// Prompt for each chaaracter type and if the user answers yes, add the corresponding object to
-	// the array. Repeat until the user chooses a minimum defined by intNoOfCharTypes.
-
-	while (arrCharTypes.length < intNoOfCharTypes) {
+	var arrTypes = []
 
 
-		arrCharTypes.length = 0		// Reset the array length to 0 so we don't get a false positive when looping
+	// Check the state of the checkboxes and build the array.
+	if (document.getElementById("inputUpperCase").checked) {
 
-
-		if (confirm("Do you want to use numbers?")) {
-
-			arrCharTypes.push(objNumCharCP);
-
-		}
-
-		if (confirm("Do you want to use lowercase letters?")) {
-
-			arrCharTypes.push(objLCaseCharCP);
-
-		}
-
-		if (confirm("Do you want to use uppercase letters?")) {
-
-			arrCharTypes.push(objUCaseCharCP);
-
-		}
-
-		if (confirm("Do you want to use special characters?")) {
-
-			arrCharTypes.push(objSpecialCharCP);
-
-		}
-
-
-		// Check the length of the arrCharTypes array. If it is less than required (as defined by
-		// intNoOfCharTypes) the user needs to be prompted again and we go back to the top of the loop.
-
-		if (arrCharTypes.length < intNoOfCharTypes) {
-
-			alert("Please choose " + intNoOfCharTypes + " or more character types!");
-
-		}
-
+		arrTypes.push(objUCaseCharCP);
 
 	}
 
+	if (document.getElementById("inputNumbers").checked) {
 
-	// Now that we have the password parameters (length and which character types to use), start building
-	// an array of characters to choose from. Loop through each of the character types in the arrCharTypes
-	// array. Call the getCharacters function for each type.
-
-	arrCharTypes.forEach(getCharacters);
-
-
-	// Now that we have an array full of characters to choose from (arrCharacters), get a random number and
-	// use it to access the array. Add each character to the password string (strPassword).
-	// Loop through this until we reach the number of characters required for the password (intPwdLength).
-
-	for (let i = 1; i <= intPwdLength; i++) {
-
-		intRndNum = Math.floor(Math.random() * arrCharacters.length);
-
-		strPassword = strPassword + arrCharacters[intRndNum];
+		arrTypes.push(objNumCharCP);
 
 	}
 
+	if (document.getElementById("inputLowerCase").checked) {
 
-	// Return the value of strPassword to the calling function.
+		arrTypes.push(objLCaseCharCP);
 
-	return strPassword
+	}
+
+	if (document.getElementById("inputSpecial").checked) {
+
+		arrTypes.push(objSpecialCharCP);
+
+	}
+
+	return arrTypes
 
 
 }
@@ -208,3 +194,68 @@ function getCharacters(charType) {
 }
 
 
+// This function generates the required number of passwords and returns them as a single string with
+// newline characters after each password.
+
+function generatePasswords() {
+
+
+	var intNoOfPasswords = +document.getElementById("inputNoOfPasswords").value;
+	var intPwdLength = +document.getElementById("inputPwdLength").value;
+
+
+	// Run a for loop until the required number of passwords (defined by intNoOfPasswords)
+	// has been reached.
+
+	for (let i = 1; i <= intNoOfPasswords; i++) {
+
+		// Get a random number and use it to access the arrCharacters array. Add each character to the password being generated (strPassword).
+		// Loop through this until we reach the number of characters required for the password (intPwdLength).
+
+		var strPassword = ""
+
+		for (let i = 1; i <= intPwdLength; i++) {
+
+			intRndNum = Math.floor(Math.random() * arrCharacters.length);
+
+			strPassword = strPassword + arrCharacters[intRndNum];
+
+		}
+
+		// Add the newly generated password to the string of passwords. Also add a newline character if there is
+		// more than one password.
+
+		if (i > 1) {
+
+			strPasswordList = strPasswordList + "\n"
+
+		}
+
+		strPasswordList =  strPasswordList + strPassword
+
+	}
+
+
+}
+
+
+// This function copies the generated passwords to the clipboard when the 'Copy' button is clicked.
+
+function copyText() {
+
+
+	// Get the textarea where the passwords are
+	let pwdTextArea = document.getElementById("passwordOutput")
+
+	// Select it
+	pwdTextArea.select();
+	pwdTextArea.setSelectionRange(0, 99999); 	//For mobile devices
+
+	// Copy it
+	document.execCommand("copy")
+
+	// Alert the user
+	alert("Passwords have been copied to the clipboard")
+
+
+}
