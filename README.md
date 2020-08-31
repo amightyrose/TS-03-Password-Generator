@@ -27,13 +27,13 @@ The application has the following features:
 
 1. Open a web browser and go to <https://timsilby.github.io/TS-03-Password-Generator/>.
 2. Choose the password parameters:
-* The number of passwords to generate (from 1 to 20).
-* The number of characters in each password (from 8 to 128).
-* Which character types to use when generating the passwords:
-  * Upper case letters
-  * Lower case letters
-  * Numbers
-  * Special characters
+   * The number of passwords to generate (from 1 to 20).
+   * The number of characters in each password (from 8 to 128).
+   * Which character types to use when generating the passwords:
+     * Upper case letters
+     * Lower case letters
+     * Numbers
+     * Special characters
 3. Click the _**Generate**_ button.
 4. Click the _**Copy**_ button to copy the passwords to the clipboard.
 
