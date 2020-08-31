@@ -39,7 +39,7 @@ The application has the following features:
 
 ### Customisation
 
-By default the application requires a minimum of one character type to be chosen. To force the generation of more complex passwords, the minimum can be increased by modifying this statement:
+By default the application requires a minimum of one character type to be chosen. To force the generation of more complex passwords, the minimum can be increased by modifying this statement in _<script.js>_:
 ```javascript
 var intNoOfCharTypes = 1;
 ```
