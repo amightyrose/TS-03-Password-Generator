@@ -12,9 +12,9 @@ A simple web-based password generator.
 
 Password Generator is a simple web application for generating random passwords. It easy to use and requires minimal input from the user.
 
-Try it now: **<https://timsilby.github.io/TS-03-Password-Generator/>**
+Try it now: <https://timsilby.github.io/TS-03-Password-Generator/>
 
-### Features
+## Features
 
 The application has the following features:
 
@@ -23,7 +23,7 @@ The application has the following features:
 * Passwords can be generated using four different character types.
 * Passwords can be easily copied to the clipboard.
 
-### Usage
+## Usage
 
 1. Open a web browser and go to <https://timsilby.github.io/TS-03-Password-Generator/>.
 2. Choose the password parameters:
@@ -37,7 +37,7 @@ The application has the following features:
 3. Click the _**Generate**_ button.
 4. Click the _**Copy**_ button to copy the passwords to the clipboard.
 
-#### Customisation
+### Customisation
 
 By default the application requires a minimum of one character type to be chosen. To force the generation of more complex passwords, the minimum can be increased by modifying this statement:
 ```javascript
@@ -45,9 +45,9 @@ var intNoOfCharTypes = 1;
 ```
 The maximum value is 4.
 
-### Development
+## Development
 
-This application was written in JavaScript and styled with Bootstrap.
+This application was written in JavaScript and styled mainly with Bootstrap.
 
 #### Author
 
